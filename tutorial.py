@@ -5,27 +5,25 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor, Lambda, Compose
 import matplotlib.pyplot as plt
 
+# GPUを呼び出す
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print("Using {} device".format(device))
 
+# データのロード
 print(torch.cuda.is_available())
-# Download training data from open datasets.
 training_data = datasets.FashionMNIST(
     root="data",
     train=True,
     download=True,
     transform=ToTensor(),
 )
-
-# Download test data from open datasets.
 test_data = datasets.FashionMNIST(
     root="data",
     train=False,
     download=True,
     transform=ToTensor(),
 )
-
 batch_size = 64
-
-# Create data loaders.
 train_dataloader = DataLoader(training_data, batch_size=batch_size)
 test_dataloader = DataLoader(test_data, batch_size=batch_size)
 
@@ -35,13 +33,7 @@ for X, y in test_dataloader:
     break
 
 
-# Get cpu or gpu device for training.
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print("Using {} device".format(device))
-
-# Define model
-
-
+# モデルを定義
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
@@ -61,9 +53,8 @@ class NeuralNetwork(nn.Module):
         return logits
 
 
+# モデルを構築
 model = NeuralNetwork().to(device)
-print(model)
-
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 
