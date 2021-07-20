@@ -6,7 +6,7 @@ import torch.nn.functional as F
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5)
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=6, kernel_size=5)
         self.conv2 = nn.Conv2d(in_channels=6, out_channels=16, kernel_size=5)
         self.fc1 = nn.Linear(in_features=16*5*5, out_features=120)
         self.fc2 = nn.Linear(120, 84)
@@ -31,12 +31,13 @@ class Net(nn.Module):
         return num_features
 
 
-net = Net()
-print(net)
-input = torch.randn(1, 1, 32, 32, requires_grad=True)
-output = net(input)
-target = torch.randn(10)
-target = target.view(1, -1)
-criterion = nn.MSELoss()
-loss = criterion(output, target)
-print(loss)
+if __name__ == '__main__':
+    net = Net()
+    print(net)
+    input = torch.randn(1, 1, 32, 32, requires_grad=True)
+    output = net(input)
+    target = torch.randn(10)
+    target = target.view(1, -1)
+    criterion = nn.MSELoss()
+    loss = criterion(output, target)
+    print(loss)
